@@ -65,8 +65,14 @@ namespace Client
                     entcig.ExtractToFile(tempCig, true);
                     byte[] hash = File.ReadAllBytes(tempFile);
                     byte[] signhash = File.ReadAllBytes(tempCig);
-                    Console.WriteLine();
-                    Console.WriteLine(SignDoc.Verify(hash, signhash));
+                    if(SignDoc.Verify(hash, signhash) == true)
+                    {
+                        Console.WriteLine("\n1.Файл 2.Его подпись. Подпись: подтверждена");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Операция провалена");
+                    }        
                 }
             }
             Console.ReadKey();
