@@ -24,17 +24,18 @@ namespace Server.Controllers
         [HttpPost("/GetFile")]
         public IActionResult GetFile(IFormFile file)
         {
+            string type = file.Headers.Values.Last();
             string path = @"D:\Labs\Serv\Server\Upload";
+            string root = @"D:\Labs\Serv\Server\Upload\UncryptFile" + type;
+            string sign = @"D:\Labs\Serv\Server\Upload\SignedFile.cig";
+            string cryptppath = @"D:\Labs\Serv\Server\Upload\CryptZip.zip";
+            string zipstr = @"D:\Labs\Serv\Server\Upload\ZIP.zip";
             string filePath = Path.Combine(path, file.FileName);
             using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
             {
                 file.CopyToAsync(fileStream);               
             }
-            string type = file.Headers.Values.Last();
-            string root = @"D:\Labs\Serv\Server\Upload\UncryptFile" + type;
-            string sign = @"D:\Labs\Serv\Server\Upload\SignedFile.cig";
-            string cryptppath = @"D:\Labs\Serv\Server\Upload\CryptZip.zip";
-            string zipstr = @"D:\Labs\Serv\Server\Upload\ZIP.zip";
+                   
             Crypted.DecryptFile(filePath, root);
             FileInfo Delete = new FileInfo(filePath);
             Delete.Delete();
